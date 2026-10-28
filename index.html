@@ -3,11 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Game</title>
+    <meta name="theme-color" content="#f5f8f2">
+    <title>Charity City Pipeline</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <h1>Welcome to the Charity Water Game Prototype</h1>
-    <script src="script.js"></script>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="#home" aria-label="Charity City Pipeline home">
+                <img src="img/cw_logo_horizontal.png" alt="charity: water">
+                <span class="brand-divider" aria-hidden="true"></span>
+                <span class="brand-title">CHARITY CITY<br>PIPELINE</span>
+            </a>
+            <button class="icon-button settings-button" id="settings-button" type="button" aria-label="Settings" title="Settings">
+                <span aria-hidden="true">☼</span>
+            </button>
+        </header>
+
+        <main>
+            <section class="home-screen" id="home-screen">
+                <div class="home-copy">
+                    <p class="eyebrow"><span class="eyebrow-dot"></span> A waterworks puzzle</p>
+                    <h1>Build a line.<br><em>Bring water home.</em></h1>
+                    <p class="intro-copy">Connect every pipe from the source to Charity City. One good turn can change a whole neighborhood.</p>
+
+                    <div class="home-actions">
+                        <button class="button button-primary" id="start-button" type="button">Start New Game</button>
+                        <button class="button button-text hidden" id="continue-button" type="button">Continue current game</button>
+                        <button class="button button-text hidden" id="restart-button" type="button">Restart current game</button>
+                    </div>
+                </div>
+
+                <div class="home-art" aria-label="Illustration of a pipeline bringing water to a city">
+                    <div class="art-sun"></div>
+                    <div class="art-hill hill-back"></div>
+                    <div class="art-hill hill-front"></div>
+                    <div class="city-silhouette">
+                        <span class="building building-one"></span>
+                        <span class="building building-two"></span>
+                        <span class="building building-three"></span>
+                        <span class="building building-four"></span>
+                        <span class="building building-five"></span>
+                    </div>
+                    <div class="art-pipe pipe-run-one"></div>
+                    <div class="art-pipe pipe-run-two"></div>
+                    <div class="art-pipe pipe-run-three"></div>
+                    <div class="art-pipe pipe-joint joint-one"></div>
+                    <div class="art-pipe pipe-joint joint-two"></div>
+                    <img class="art-can" src="img/water-can-transparent.png" alt="">
+                    <div class="art-caption"><span>01</span> Clean water, connected</div>
+                </div>
+                <div class="home-footer"><span>21 levels</span><span class="footer-line"></span><span>One city at a time</span></div>
+            </section>
+
+            <section class="game-screen hidden" id="game-screen" aria-label="Pipeline game">
+                <div class="game-heading">
+                    <div>
+                        <p class="eyebrow" id="campaign-label">CITY NETWORK</p>
+                        <h1 id="level-title">Level 01 <span>·</span> Main Street</h1>
+                    </div>
+                    <p class="game-prompt" id="game-prompt">Turn the piece, then place it where the water can flow.</p>
+                </div>
+
+                <div class="status-row">
+                    <section class="status-box score-box" aria-label="Score">
+                        <span class="status-label">SCORE</span>
+                        <strong id="score-value">0000</strong>
+                        <span class="status-note" id="score-note">Pipes connected</span>
+                    </section>
+                    <section class="status-box level-box" aria-label="Level and time">
+                        <span class="status-label" id="timer-label">TIME LEFT</span>
+                        <strong id="timer-value">01:30</strong>
+                        <span class="status-note" id="level-value">LEVEL 01 / 21</span>
+                    </section>
+                    <section class="status-box next-box" aria-label="Next pipe">
+                        <span class="status-label">NEXT PIECE</span>
+                        <button class="piece-preview-button" id="piece-preview-button" type="button" aria-label="Rotate next pipe">
+                            <span class="piece-shape" id="preview-shape" aria-hidden="true"></span>
+                            <span class="rotate-hint">Tap to turn</span>
+                        </button>
+                        <span class="status-note" id="piece-name">Elbow pipe</span>
+                    </section>
+                </div>
+
+                <div class="game-layout">
+                    <section class="board-panel" aria-label="Pipeline board">
+                        <div class="board-topline"><span>WATER SOURCE</span><span>CHARITY CITY</span></div>
+                        <div class="board-wrap">
+                            <div class="source-marker" aria-label="Water source"><span class="source-drop">●</span><small>WELL</small></div>
+                            <div class="game-board" id="game-board" role="grid" aria-label="Seven by seven pipe grid"></div>
+                            <div class="city-marker" aria-label="Charity City"><span class="city-star">✦</span><small>CITY</small></div>
+                        </div>
+                        <div class="board-legend"><span><i class="legend-dot water-dot"></i> Water source</span><span><i class="legend-dot city-dot"></i> Charity City</span><span><i class="legend-dot obstacle-dot"></i> Obstacles</span><span id="flow-status">Water is waiting</span></div>
+                    </section>
+
+                    <aside class="controls-panel">
+                        <div class="piece-instruction"><span class="instruction-number">01</span><p>Tap the pipe to rotate it.</p></div>
+                        <div class="piece-instruction"><span class="instruction-number">02</span><p>Choose a <b>+</b> to place it.</p></div>
+                        <div class="piece-instruction"><span class="instruction-number">03</span><p>Move your last pipe or continue.</p></div>
+                        <div class="control-divider"></div>
+                        <div class="placed-message" id="placed-message" aria-live="polite">Your next pipe is ready.</div>
+                        <button class="button button-primary continue-button" id="continue-piece-button" type="button" disabled>Place a pipe first <span aria-hidden="true">→</span></button>
+                        <button class="button button-outline" id="move-piece-button" type="button" disabled><span aria-hidden="true">↶</span> Move last pipe</button>
+                        <p class="control-footnote" id="mode-note">A quick connection earns more.</p>
+                    </aside>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer"><span>CHARITY CITY PIPELINE</span><span>Every connection counts.</span></footer>
+    </div>
+
+    <div class="overlay hidden" id="game-overlay" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+        <div class="overlay-card" id="overlay-card">
+            <button class="icon-button overlay-close" id="overlay-close" type="button" aria-label="Close dialog">×</button>
+            <div class="overlay-symbol" id="overlay-symbol" aria-hidden="true">✦</div>
+            <p class="eyebrow" id="overlay-eyebrow">A new connection</p>
+            <h2 id="overlay-title">Level Up</h2>
+            <p class="overlay-copy" id="overlay-copy"></p>
+            <div class="overlay-actions" id="overlay-actions"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
